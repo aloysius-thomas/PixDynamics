@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>todo</title>
+</head>
+<body>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form method="POST">
+    <h2> Todo Registration </h2>
+    {% csrf_token %}
+
+    {{form.as_p}}
+    <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Register </button>
+</form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mt-3 left">
+            {% for i in query %}
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h2 class="card-title" style="color: darkblue;">Name : {{ i.name }}</h2>
+                    <p class="card-text text-muted h6">Address: {{ i.address|slice:":200"  }}  </p>
+                    <p class="card-text" style="color: blue;"> Contact: {{i.contact}}</p>
+                    <a href="{% url 'todo_delete' i.id  %}" class="btn btn-primary">Delete</a>
+
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+                {% block sidebar %}
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4 float-right ">
+<div class="card my-4">
+        <h5 class="card-header"><i class='far fa-id-card' style='font-size:48px;color:red'></i>
+
+</h5>
+    <div class="card-body">
+         {% if request.user.is_authenticated %}
+            <div class="col-md-12">
+                {% if image %}
+            <img src="{{ user_data.user_image.url }}" alt="" width="100%">
+                <p align="center">Yourself : {{user}}</p>
+                {% else %}
+                <i class='far fa-id-card' style='font-size:48px;color:red'></i>
+
+                {% endif %}
+    </div>
+        {% else %}
+            <i class='far fa-id-card' style='font-size:48px;color:red'></i>
+
+{% endif %}
+    </div>
+
+</div>
+</div>
+    </p>{% endblock sidebar %}
+
+    </div>
+</div>
+
+
+</body>
+</html>
